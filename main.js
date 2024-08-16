@@ -27,32 +27,36 @@ const guessIsValid = (guess, max) => typeof guess === 'number' && guess > 0 && g
  * Displays a "Game Over" message if the user has not guessed correctly before their last attempt.
  */
 function guessingGame() {
-    const magicNumber = getRandomInteger(10);
-    let countOfGuesses = 9;
+    const magicNumber = getRandomInteger(100);
+    let countOfGuesses = 5;
     let isAMatch = false;
+    let message = `Please enter a number from 0 through 100. You have ${countOfGuesses} guesses left. (${magicNumber})`
+    let userGuess = -1;
 
     while (!isAMatch && countOfGuesses > 0) {
-        const userGuess = parseInt(prompt("Please enter a number from 0 through 10. You have " + countOfGuesses + " guesses left. " + magicNumber));
-        log(typeof userGuess);
+        userGuess = parseInt(prompt(message));
 
-        countOfGuesses--;
-
-        if (!guessIsValid(userGuess, 10)) {
-            alert("not valid input");
+        if (!guessIsValid(userGuess, 100)) {
+            message = `Not a valid input. No worries! That one's a freebie. You still have ${countOfGuesses} guesses left. Please enter a number from 0 through 100. (${magicNumber})`
             continue;
         }
 
-        if (userGuess == magicNumber) {
-            alert(userGuess + " is the correct number!");
+        countOfGuesses--;
+
+        if (userGuess === magicNumber) {
             isAMatch = true;
         } else if (userGuess < magicNumber) {
-            alert(userGuess + " is too low.");
+            message = `${userGuess} is too low. Please enter a number from 0 through 100. You have ${countOfGuesses} guesses left. (${magicNumber})`
         } else {
-            alert(userGuess + " is too high.");
+            message = `${userGuess} is too high. Please enter a number from 0 through 100. You have ${countOfGuesses} guesses left. (${magicNumber})`
         }
+    }
+    if (isAMatch) {
+        message = `${userGuess} is correct!`
     }
 
     if (!isAMatch) {
-        alert("You've used all your guesses. The correct number was " + magicNumber + ".");
+        message = `You didn't guess the number. Like a turd.`
     }
+    alert(message);
 }
